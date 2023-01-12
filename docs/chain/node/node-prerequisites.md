@@ -7,9 +7,15 @@ The document contains common information for any type of node.
 ulimit -n
 ```
 
-If the limit < 2048, then update it. We recommend to set "65536" as limit.
+If the limit < 2048, then increase it. We recommend to set "65536" as limit. Make it permanent(store to config file)
 
 **Attention!** *This setting is critical for the node, without it the node will crash as soon as it reach the limit.*
+
+## Install required utils
+- crudini
+- curl
+- jq
+
 
 ## Supported architectures and operating systems
 

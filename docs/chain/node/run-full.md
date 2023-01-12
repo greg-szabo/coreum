@@ -1,37 +1,38 @@
 # Run full
 
-**Attention!** *If you are planning to run a node against the devnet (either full node or a validator node), be mindful that the devnet might be restarted without prior notice (i.e block height is set to 0 and all state removed), and you should be prepared to act accordingly by removing all state and start from zero.*
+Full node is a base to run validator, seed, sentry nodes etc. You should finish whole instruction before moving forward.
+
+**Attention!** *If you are planning to run a node against the devnet (either full node or a validator node), 
+be mindful that the devnet might be restarted without prior notice (i.e block height is set to 0 and all state removed), 
+and you should be prepared to act accordingly by removing all state and start from zero.*
 
 The doc describes the procedure of creating and running the full node.
 
-* The [install binaries](../install-cored.md) doc describes the installation process.
+*The [install binaries](../install-cored.md) doc describes the installation process.
 
 * Set up the CLI environment following the [doc](../cli-env.md).
 
 * Set up [node prerequisites](node-prerequisites.md)
 
 * Set the moniker variable to reuse it in the following instructions.
-  ```bash
-  export MONIKER="full"
-  ```
+```bash
+export MONIKER="full"
+```
 
-* Init the node.
+* Init the node
 
-  ```bash
-  cored init $MONIKER $CORED_CHAIN_ID_ARGS
-  ```
+```bash
+cored init $MONIKER $CORED_CHAIN_ID_ARGS
+```
   The command will create a default node configuration
-
-* Install the required utils: `crudini, curl, jq`.
 
 * Set the common connection config using the [doc](set-connection-config.md).
 
 * Set the config path variables.
 
-  ```bash
-  CORED_NODE_CONFIG=$CORED_HOME/config/config.toml
-  CORED_APP_CONFIG=$CORED_HOME/config/app.toml
-  ```
+```bash
+CORED_APP_CONFIG=$CORED_HOME/config/app.toml
+```
 
 * (Optional) Enable REST APIs disabled by default.
   ```bash

@@ -32,11 +32,22 @@ This doc describes the command to set up the environment depending on the type o
     export CORED_NODE_ARGS="--node=$CORED_NODE $CORED_CHAIN_ID_ARGS"
     
     export CORED_HOME=$HOME/.core/"$CORED_CHAIN_ID"
+  
+    export CORED_BINARY_NAME=$(arch | sed s/aarch64/cored-linux-arm64/ | sed s/x86_64/cored-linux-amd64/)
+    export COSMOVISOR_TAR_NAME=cosmovisor-$CORED_COSMOVISOR_VERSION-linux-$(arch | sed s/aarch64/arm64/ | sed s/x86_64/amd64/).tar.gz
+  
+    export PATH=$PATH:$CORED_HOME/bin
+    export PATH=$PATH:$CORED_HOME/cosmovisor/genesis/bin
+    export DAEMON_HOME="$CORED_HOME/"
+    export DAEMON_NAME="cored"
     ```
+
+  **Attention!** *Set those variables globally to be automatically set after starting a new terminal session.*
+
 
 * (Optional) set those variables globally to be automatically set after starting a new terminal session.
 
-* (Optional) init the fund account function to use later.
+* (Optional) init the fund account function to use later. This function might be used later.
 
     ```bash
     fund_cored_account(){ 

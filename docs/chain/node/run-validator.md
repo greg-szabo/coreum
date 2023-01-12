@@ -2,27 +2,23 @@
 
 The doc describes the procedure of creating and running the validator node which.
 
-* The [install binaries](../install-cored.md) doc describes the installation process.
-
-* Set up the CLI environment following the [doc](../cli-env.md).
-
-* Set up [node prerequisites](../node/node-prerequisites.md).
-
-* Init the node using [instruction](run-full.md).
+* Init the full node using [instruction](run-full.md). Full node actually will be used in "validator" role.
 
   *Keep the $CORED_HOME/config/node_key.json and $CORED_HOME/config/priv_validator_key.json in a safe place, since it
   can be used to recover the validator node!*
 
 * Set the common connection config using the [doc](../node/set-connection-config.md).
 
-* (Optional) Run sentry nodes using the [doc](../node/run-sentry.md).
+* (Optional) Run sentry nodes using the [doc](../node/run-sentry.md). 
+(If you don't want to expose your validator node to the internet, but still want to interact with the network)
 
 * Set the moniker variable to reuse it in the following instructions.
   ```bash
   export MONIKER="validator"
   ```
-
-* Init new validator account (if you don't have existing).
+  
+* Init new account (if you don't have existing), 
+which will be used for validator control, delegation and staking rewards/commission receiving 
 
   ```
   cored keys add $MONIKER --keyring-backend os
@@ -40,7 +36,6 @@ The doc describes the procedure of creating and running the validator node which
     pubkey: '{"@type":"/cosmos.crypto.secp256k1.PubKey","key":"AwzsffiidUiFtmNng5pLTH6cj1hv4Ufa+zKZpmRVGfNk"}'
     mnemonic: ""
   
-
   **Important** write this mnemonic phrase in a safe place.
   It is the only way to recover your account if you ever forget your password.
   
@@ -48,8 +43,9 @@ The doc describes the procedure of creating and running the validator node which
   ```
 
 **Attention!** *Keep the mnemonic phrase in a safe place, since it can be used to recover the key!*
+(Don't be confused with empty mnemonic after pubkey, it is shown in the end of the output)
 
-* If you have the mnemonic you can import it.
+* If you have the mnemonic you can import it(Skip it if you generated account at previous step)
 
   ```bash
   cored keys add $MONIKER --keyring-backend os --recover
@@ -57,11 +53,14 @@ The doc describes the procedure of creating and running the validator node which
 
   You will be asked to "Enter keyring passphrase" and "Enter your bip39 mnemonic".
 
-* Get the validator account.
-
+* Derive the validator-operator address, which will be used for validator creation.
   ```bash
   cored keys show $MONIKER --bech val --address --keyring-backend os
   ```
+  
+Q: wait, I already created a validator account, why do I have two?
+Q: Also when I run cored query slashing signing-infos, I don't see any of them, 
+   but there is my node with third address `devcorevalcons1w639j44v7x7cjsj9zepmdv5wyupyujn6qazfnp`, how does it work?
 
   The output example:
   ```bash
@@ -70,9 +69,13 @@ The doc describes the procedure of creating and running the validator node which
 
 * Fund the account to be able to create the validator, and check that you have enough to start.
 
+Q: Where to fund it? and which address should I fund, I have two validator accounts. (I guess the first one)
+Q: I've used faucet one time and it is not enough to start validator, three times is needed.(two times plus commision)
+
   ```bash
   cored q bank balances  $(cored keys show $MONIKER --address --keyring-backend os) --denom $CORED_DENOM
   ``` 
+
 
 * Check that node is fully synced
 
@@ -81,6 +84,8 @@ The doc describes the procedure of creating and running the validator node which
   ``` 
   If the output `catching_up: false` the node is fully synced.
 
+  **Attention** Wait until node will be fully synced. 
+ 
 * Create validator
   ** set up validator configuration
   ```bash
@@ -89,6 +94,7 @@ The doc describes the procedure of creating and running the validator node which
    export CORED_VALIDATOR_WEB_SITE="" # (Optional) update with the site
    export CORED_VALIDATOR_IDENTITY="" # (Optional) update with identity id, which can generated on the site https://keybase.io/
    export CORED_VALIDATOR_COMMISSION_RATE="0.10" # (Required) Update with commission rate
+  Q: where to get commission rate and other values?
    export CORED_VALIDATOR_COMMISSION_MAX_RATE="0.20" # (Required) Update with commission max rate
    export CORED_VALIDATOR_COMMISSION_MAX_CHANGE_RATE="0.01" # (Required) Update with commission max change rate
    export CORED_MIN_DELEGATION_AMOUNT=20000000000 # (Required) default 20k, must be grater or equal min_self_delegation parameter on the current chain
@@ -120,3 +126,6 @@ The doc describes the procedure of creating and running the validator node which
     ```
 
   If in the output `status: BOND_STATUS_BONDED` - the validator is validating.
+
+
+  
