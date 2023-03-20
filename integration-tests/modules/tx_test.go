@@ -1,7 +1,7 @@
 package modules
 
 // crust build/integration-tests
-// ./coreum-modules -chain-id=coreum-mainnet-1 -cored-address=full-node-curium.mainnet-1.coreum.dev:9090 -test.run=TestValidatorGrant
+// ./coreum-modules -chain-id=coreum-mainnet-1 -cored-address=full-node-curium.mainnet-1.coreum.dev:9090 -test.run=TestValidatorGrant > multisig.json
 
 import (
 	"fmt"
@@ -34,11 +34,16 @@ func TestValidatorGrants(t *testing.T) {
 		"core1q6mdzggk7feskx3uy90su8sqernswjpcrechnl",
 		"core16h0h2cjul7qa3np664ae9gqzrd0apcp8e7wgfw",
 		"core1sg0gwgwumymhp0acldjpz7s3k9trgcnndqw593",
-		"core1f83v95nmgr5zujarwrf3shen4fydgraahrgwq3",
 		"core1flaz3hzgg3tjszl372lu2zz5jsmxd8pv7npmgk",
 		"core1f3v67lpkha4hhruncehqzjmt6f6t2fdnxryxvm",
 		"core1kepnaw38rymdvq5sstnnytdqqkpd0xxwz289jg",
 		"core1wj9qy0fvjawl9agz0ef3e9euw9mjfp0lnjxa5m",
+		"core19p9mc0lrlndcwejrqk0m8a4jv035prnn470sg3",
+		"core18r30dcw0063xq6zcqucldxyf27jqxmevygw4y2",
+		"core1wg7d740544xvvp75hcjd7t6p6sh3xq8t2cg9t4",
+		"core1k0rllvenwr02gvm52fh5056g5m3hly2lmhy5z2",
+		"core1wj9qy0fvjawl9agz0ef3e9euw9mjfp0lnjxa5m",
+		"core1uhrrdv6g6v9t38v4qghjucunnxyk8xt34jazzr",
 	}
 
 	requireT := require.New(t)
@@ -80,7 +85,7 @@ func TestValidatorGrants(t *testing.T) {
 	txBuilder, err := chain.TxFactory().
 		WithAccountNumber(acc.GetAccountNumber()).
 		WithSequence(acc.GetSequence()).
-		WithGas(chain.GasLimitByMsgs(multisendMsg)).
+		WithGas(chain.GasLimitByMsgs(multisendMsg) + 10000).
 		BuildUnsignedTx(multisendMsg)
 	requireT.NoError(err)
 
