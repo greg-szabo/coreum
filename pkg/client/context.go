@@ -233,6 +233,11 @@ func (c Context) WithInput(r io.Reader) Context {
 	return c
 }
 
+// Codec returns codec
+func (c Context) Codec() codec.Codec {
+	return c.clientCtx.Codec
+}
+
 // WithCodec returns a copy of the Context with an updated Codec.
 func (c Context) WithCodec(m codec.Codec) Context {
 	c.clientCtx = c.clientCtx.WithCodec(m)

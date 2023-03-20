@@ -1,6 +1,7 @@
 package integrationtests
 
 import (
+	"crypto/tls"
 	"reflect"
 
 	"github.com/cosmos/cosmos-sdk/client/flags"
@@ -10,6 +11,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/pkg/errors"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 
 	"github.com/CoreumFoundation/coreum/app"
 	"github.com/CoreumFoundation/coreum/pkg/client"
@@ -172,7 +174,7 @@ func NewChain(cfg ChainConfig) Chain {
 		WithKeyring(newConcurrentSafeKeyring(keyring.NewInMemory())).
 		WithBroadcastMode(flags.BroadcastBlock)
 
-	grpcClient, err := grpc.Dial(cfg.GRPCAddress, grpc.WithInsecure())
+	grpcClient, err := grpc.Dial(cfg.GRPCAddress, grpc.WithTransportCredentials(credentials.NewTLS(&tls.Config{})))
 	if err != nil {
 		panic(err)
 	}
